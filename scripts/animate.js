@@ -16,7 +16,7 @@ function moveBackground() {
         'transform': translate
     });
     
-    translate = 'translate(' + (x / 3) + 'px, ' + (y / 3) + 'px) scale(1.1)';
+    translate = 'translate(' + (x / 3) + 'px, ' + (y / 3) + 'px)';
 
     $('.center').css({
         '-webit-transform': translate,
