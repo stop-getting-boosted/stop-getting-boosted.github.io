@@ -20,7 +20,6 @@ body {
     background: url(https://i.imgur.com/mIcS7MZ.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    transform: scale(1.1);
     
     -webkit-filter: blur(8px);
     filter: blur(8px);
