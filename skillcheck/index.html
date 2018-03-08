@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Skillcheck Practice</title>
+        <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet"/>
+        <link href="../css/style.css" rel="stylesheet"/>
+        <script src="../js/jquery-3.3.1.min.js"></script>
+        <script src="../js/background.js"></script>
+        <script src="skillcheck.js"></script>
+    </head>
+    <body>
+        <div id="bg"></div>
+        <div id="controls">
+            <div>
+                <a class="hoverable" href="../">Back</a>
+            </div>
+            <div>
+                <a class="hoverable">Configure</a>
+            </div>
+            <div>
+                <a id="start-btn" class="hoverable" onclick="onStart()"></a>
+            </div>
+        </div>
+        <div id="skillcheck" style="opacity: 0;">
+            <div class="sc_element" id="sc_tick">
+                <div id="sc_tickmark"></div>
+            </div>
+            <canvas class="sc_element" id="sc_zone" width=140 height=140></canvas>
+        </div>
+        <div id="stats">
+            <span id="great"></span>
+            <span>Great</span>
+            /
+            <span id="good"></span>
+            <span>Good</span>
+            /
+            <span id="miss"></span>
+            <span>Missed</span>
+        </div>
+    </body>
+</html>

@@ -8,23 +8,18 @@ function moveBackground() {
     x += (lFollowX - x) * friction;
     y += (lFollowY - y) * friction;
     
-    translate = 'translate(' + x + 'px, ' + y + 'px) scale(1.1)';
-
-    $('.bg').css({
-        '-webit-transform': translate,
-        '-moz-transform': translate,
-        'transform': translate
-    });
-    
-    translate = 'translate(' + (x / 3) + 'px, ' + (y / 3) + 'px)';
-
-    $('.center').css({
-        '-webit-transform': translate,
-        '-moz-transform': translate,
-        'transform': translate
-    });
+    transform($('#bg'), 'translate(' + x + 'px, ' + y + 'px) scale(1.1)');
+    transform($('#moving-text'), 'translate(' + (x / 3) + 'px, ' + (y / 3) + 'px)');
 
     window.requestAnimationFrame(moveBackground);
+}
+
+function transform(element, transform) {
+    element.css({
+        '-webit-transform': transform,
+        '-moz-transform': transform,
+        'transform': transform
+    });
 }
 
 $(window).on('mousemove click', function(e) {
