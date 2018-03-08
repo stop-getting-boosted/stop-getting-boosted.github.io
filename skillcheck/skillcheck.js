@@ -167,6 +167,7 @@ function handleAction(result) {
         case 'great':
             stat_great++;
             (snd_great_toggle = !snd_great_toggle) ? snd_great_1.play() : snd_great_2.play();
+            break;
         case 'good':
             stat_good++;
             (snd_good_toggle = !snd_good_toggle) ? snd_good_1.play() : snd_good_2.play();
@@ -174,10 +175,9 @@ function handleAction(result) {
     }
     
     // Wait 500ms before being ready to display a new skill check
-            setTimeout(function() {
-                sc_ready = true;
-            }, 500);
-            break;
+    setTimeout(function() {
+        sc_ready = true;
+    }, 500);
 }
 
 function resetStats() {
