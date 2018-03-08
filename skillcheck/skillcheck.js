@@ -45,7 +45,9 @@ var timeout;
 var keyState = {};
 window.addEventListener('keydown',function(e){
     keyState[e.keyCode || e.which] = true;
-    if (event.which == 80) {
+    
+    // If the user presss "P", toggle the running state
+    if (keyState[80]) {
         onStart();
     }
 },true);    
@@ -244,7 +246,7 @@ function newSkillCheck() {
     // so we can make 100 passes every 10ms and each pass if we
     // increment the rotation by 3.6 degrees, we'll have the equivalent
     // of 360 degrees per second.
-    var updateLoop = setInterval(function() {
+    var updateLoop = setInterval(function() {    
         // If the user is pressing space, then handle the zone
         if (sc_running && keyState[32]) {
             testZone();
@@ -267,7 +269,7 @@ function newSkillCheck() {
             return;
         }
         
-        // Line transform
+        // Transform the red indicator line
         $('#sc_tick').css({ 'transform': 'rotate(' + sc_line_pos + 'deg)' })
         
         var zoneStart = sc_zone_pos,
@@ -278,8 +280,9 @@ function newSkillCheck() {
         var canvas = document.getElementById('sc_zone');
         var ctx = canvas.getContext('2d');
         
-        var centerX = 70;
-        var centerY = 70;
+        // Zone sizing
+        var centerX = canvas.width / 2;
+        var centerY = canvas.height / 2;
         var radius = 65;
         var width = 3;
         
@@ -314,7 +317,6 @@ function runSkillChecks() {
         updateText();
         
         if (sc_ready) {
-            
             // When a new skillcheck is ready, then make the current one fade out.
             $('#skillcheck').css({ 'opacity': 0 });
             
