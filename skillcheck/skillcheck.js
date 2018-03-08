@@ -13,6 +13,7 @@ var sc_type = 'generator';
 var sc_line_pos = 0;
 var sc_zone_pos = 0;
 var sc_zone = [ 0, 0 ];
+var sc_zone_end_padding = 3;
 
 // Stats
 var stat_miss = 0;
@@ -38,6 +39,19 @@ var snd_open_toggle = false;
 
 // Various variables for functionality
 var timeout;
+
+// Key listening
+// https://stackoverflow.com/questions/12273451/how-to-fix-delay-in-javascript-keydown
+var keyState = {};
+window.addEventListener('keydown',function(e){
+    keyState[e.keyCode || e.which] = true;
+    if (event.which == 80) {
+        onStart();
+    }
+},true);    
+window.addEventListener('keyup',function(e){
+    keyState[e.keyCode || e.which] = false;
+},true);
 
 function isValidTier(tier) {
     return tier > 0 && tier <= 3;
@@ -105,7 +119,7 @@ function getSkillCheckZone(type) {
         case 'heal':
         case 'sabotage':
         case 'generator':
-            size= [ 35, 10 ];
+            size = [ 35, 10 ];
             break;
     }
     
@@ -188,15 +202,15 @@ function testZone() {
     var currentPos = sc_line_pos,
         zoneStart = sc_zone_pos,
         zoneGreatEnd = zoneStart + sc_zone[1],
-        zoneGoodEnd = zoneGreatEnd + sc_zone[0],
+        zoneGoodEnd = zoneGreatEnd + sc_zone[0] + sc_zone_end_padding,
         result;
     
     // Find the hit result
     if (currentPos < zoneStart || currentPos > zoneGoodEnd) {
         result = 'miss';
-    } else if (currentPos >= zoneStart && currentPos < zoneGreatEnd) {
+    } else if (currentPos >= zoneStart && currentPos <= zoneGreatEnd) {
         result = 'great';
-    } else if (currentPos >= zoneGreatEnd && currentPos <= zoneGoodEnd) {
+    } else if (currentPos > zoneGreatEnd && currentPos <= zoneGoodEnd) {
         result = 'good';
     }
     
@@ -231,6 +245,12 @@ function newSkillCheck() {
     // increment the rotation by 3.6 degrees, we'll have the equivalent
     // of 360 degrees per second.
     var updateLoop = setInterval(function() {
+        // If the user is pressing space, then handle the zone
+        if (sc_running && keyState[32]) {
+            testZone();
+            return;
+        }
+        
         // If the running state is no longer active, 
         if (!sc_running) {
             clearInterval(updateLoop);
@@ -241,7 +261,7 @@ function newSkillCheck() {
         sc_line_pos = normalizeAngle(sc_line_pos + 3.6);
         
         // Check if the line pos has exceeded the max zone area
-        if (sc_line_pos > sc_zone_pos + sc_zone[0] + sc_zone[1]) {
+        if (sc_line_pos > sc_zone_pos + sc_zone[0] + sc_zone[1] + sc_zone_end_padding) {
             handleAction('miss');
             clearInterval(updateLoop);
             return;
@@ -266,18 +286,20 @@ function newSkillCheck() {
         // Clear the canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
+        // Draw the circle
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#FFFFFF';
-        
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGoodEnd - 90), true);
         ctx.stroke();
         
+        // Draw the great zone
         ctx.lineWidth = (width * 2) + 1;
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGreatEnd - 90));
         ctx.stroke();
         
+        // Draw the good zone
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius + width, toRadians(zoneGreatEnd - 90), toRadians(zoneGoodEnd - 90));
@@ -339,18 +361,4 @@ function onStart() {
     }
 }
 
-$(document).ready(function() {
-    $(this).keydown(function(e) {
-        switch (e.which) {
-            case 32: // Space
-                if (running && sc_running) {
-                    testZone();
-                }
-                break;
-            case 80: // P
-                onStart();
-                break;
-        }
-    });
-    runSkillChecks();
-});
+runSkillChecks();
