@@ -324,26 +324,31 @@ function runSkillChecks() {
             // When a new skillcheck is ready, then make the current one fade out.
             $('#skillcheck').css({ 'opacity': 0 });
             
-            if (!sc_running && running) {
-                // Wait 1500-2500ms to make the opening sound
+            if (sc_running || !running)
+                return;
+            
+            timeout = setTimeout(function() {
+                if (sc_running || !running)
+                    return;
+                
+                // There are 2 instances of the opening sound to prevent
+                // sound overlap issues, using the other one every skill
+                // check will prevent this issue.
+                (snd_open_toggle = !snd_open_toggle) ? snd_open_1.play() : snd_open_2.play();
+            
+                // Wait an additional 500ms to show the check
                 timeout = setTimeout(function() {
-                    // There are 2 instances of the opening sound to prevent
-                    // sound overlap issues, using the other one every skill
-                    // check will prevent this issue.
-                    (snd_open_toggle = !snd_open_toggle) ? snd_open_1.play() : snd_open_2.play();
+                    if (sc_running || !running)
+                        return;
                     
-                    // Wait an additional 500ms to show the check
-                    timeout = setTimeout(function() {
-                        
-                        // Reset the tick position and reveal the circle
-                        $('#sc_tick').css({ 'transform': 'rotate(0deg)' })
-                        $('#skillcheck').css({ 'opacity': 1 });
-                        
-                        // Create a new skill check
-                        newSkillCheck();
-                    }, 500);
-                }, getRandomNumber(1500, 2500));
-            }
+                    // Reset the tick position and reveal the circle
+                    $('#sc_tick').css({ 'transform': 'rotate(0deg)' })
+                    $('#skillcheck').css({ 'opacity': 1 });
+                    
+                    // Create a new skill check
+                    newSkillCheck();
+                }, 500);
+            }, getRandomNumber(1500, 2500));
             
             // Set the ready state to false so that this is only ran once until set back to true
             sc_ready = false;
