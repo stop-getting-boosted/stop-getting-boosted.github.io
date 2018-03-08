@@ -6,14 +6,18 @@ var perk_unnervingPresence = 0;
 var perk_thisIsNotHappening = 0;
 var perk_overcharge = 0;
 
-// Info on the current skillcheck
+// Info on the current skill check
 var sc_running = false;
 var sc_ready = false;
 var sc_type = 'generator';
 var sc_line_pos = 0;
 var sc_zone_pos = 0;
 var sc_zone = [ 0, 0 ];
+
+// Skill check constant values
 var sc_zone_end_padding = 3;
+var sc_range_min = 120;
+var sc_range_max = 330;
 
 // Stats
 var stat_miss = 0;
@@ -233,7 +237,7 @@ function setupNewZone() {
     sc_zone = getSkillCheckZone(sc_type);
     
     // Create a random position where the check will spawn
-    sc_zone_pos = getRandomNumber(120, 330 - (sc_zone[0] + sc_zone[1]));
+    sc_zone_pos = getRandomNumber(sc_range_min, sc_range_max - (sc_zone[0] + sc_zone[1]));
 }
 
 function newSkillCheck() {
