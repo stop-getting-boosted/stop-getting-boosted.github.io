@@ -20,9 +20,18 @@ var stat_good = 0;
 var stat_great = 0;
 
 // Audio Elements
-var snd_good = new Audio('../res/mp3/sc_good.mp3');
-var snd_great = new Audio('../res/mp3/sc_great.mp3');
-var snd_miss = new Audio('../res/mp3/sc_miss.mp3');
+var snd_good_1 = new Audio('../res/mp3/sc_good.mp3');
+var snd_good_2 = new Audio('../res/mp3/sc_good.mp3');
+var snd_good_toggle = false;
+
+var snd_great_1 = new Audio('../res/mp3/sc_great.mp3');
+var snd_great_2 = new Audio('../res/mp3/sc_great.mp3');
+var snd_great_toggle = false;
+
+var snd_miss_1 = new Audio('../res/mp3/sc_miss.mp3');
+var snd_miss_2 = new Audio('../res/mp3/sc_miss.mp3');
+var snd_miss_toggle = false;
+
 var snd_open_1 = new Audio('../res/mp3/sc_open.mp3');
 var snd_open_2 = new Audio('../res/mp3/sc_open.mp3');
 var snd_open_toggle = false;
@@ -153,7 +162,7 @@ function handleAction(result) {
     switch (result) {
         case 'miss':
             stat_miss++;
-            snd_miss.play();
+            (snd_miss_toggle = !snd_miss_toggle) ? snd_miss_1.play() : snd_miss_2.play();
             // Wait 500ms before being ready to display a new skill check
             setTimeout(function() {
                 sc_ready = true;
@@ -161,7 +170,7 @@ function handleAction(result) {
             break;
         case 'great':
             stat_great++;
-            snd_great.play();
+            (snd_great_toggle = !snd_great_toggle) ? snd_great_1.play() : snd_great_2.play();
             // Wait 500ms before being ready to display a new skill check
             setTimeout(function() {
                 sc_ready = true;
@@ -169,7 +178,7 @@ function handleAction(result) {
             break;
         case 'good':
             stat_good++;
-            snd_good.play();
+            (snd_good_toggle = !snd_good_toggle) ? snd_good_1.play() : snd_good_2.play();
             // Wait 500ms before being ready to display a new skill check
             setTimeout(function() {
                 sc_ready = true;
