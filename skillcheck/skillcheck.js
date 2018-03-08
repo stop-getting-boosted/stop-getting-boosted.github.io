@@ -163,28 +163,21 @@ function handleAction(result) {
         case 'miss':
             stat_miss++;
             (snd_miss_toggle = !snd_miss_toggle) ? snd_miss_1.play() : snd_miss_2.play();
-            // Wait 500ms before being ready to display a new skill check
-            setTimeout(function() {
-                sc_ready = true;
-            }, 500);
             break;
         case 'great':
             stat_great++;
             (snd_great_toggle = !snd_great_toggle) ? snd_great_1.play() : snd_great_2.play();
-            // Wait 500ms before being ready to display a new skill check
-            setTimeout(function() {
-                sc_ready = true;
-            }, 500);
-            break;
         case 'good':
             stat_good++;
             (snd_good_toggle = !snd_good_toggle) ? snd_good_1.play() : snd_good_2.play();
-            // Wait 500ms before being ready to display a new skill check
+            break;
+    }
+    
+    // Wait 500ms before being ready to display a new skill check
             setTimeout(function() {
                 sc_ready = true;
             }, 500);
             break;
-    }
 }
 
 function resetStats() {
