@@ -15,7 +15,7 @@ var sc_zone_pos = 0;
 var sc_zone = [ 0, 0 ];
 
 // Skill check constant values
-var sc_zone_end_padding = 3;
+var sc_zone_end_padding = 0;
 var sc_range_min = 120;
 var sc_range_max = 330;
 
