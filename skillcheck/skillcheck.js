@@ -194,6 +194,8 @@ function handleAction(result) {
             break;
     }
     
+    updateText();
+    
     // Wait 500ms before being ready to display a new skill check
     setTimeout(function() {
         sc_ready = true;
