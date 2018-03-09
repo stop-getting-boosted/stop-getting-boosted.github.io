@@ -70,13 +70,31 @@ body {
 }
 
 #sc_tickmark {
-    position: fixed;
     width: 13px;
     height: 90px;
     transition-timing-function: linear;
     transform-origin: 50% 0%;
-    transform: translate(62px, -43px);
+    transform: translate(66px, -40px);
     background: radial-gradient(#ff0020, rgba(255, 0, 0, 0), rgba(255, 0, 0, 0));
+}
+
+#sc_key {
+    border: 2px solid #FFFFFF;
+    background: #000000;
+    border-radius: 7px;
+    margin-top: 54px;
+    margin-left: 19px;
+    width: 104px;
+    height: 30px;
+}
+
+#sc_keytext {
+    margin-top: 2px;
+    margin-left: 24px;
+    font-family: 'Roboto';
+    font-weight: 100;
+    font-size: 20px;
+    color: #B0B0B0;
 }
 
 .hoverable {

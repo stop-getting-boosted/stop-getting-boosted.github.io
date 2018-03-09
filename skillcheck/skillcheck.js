@@ -252,29 +252,31 @@ function drawNewZone() {
     var ctx = canvas.getContext('2d');
     
     // Zone sizing
-    var centerX = canvas.width / 2;
+    var centerOffset = 3;
+    var centerX = canvas.width / 2 + centerOffset;
     var centerY = canvas.height / 2;
     var radius = 65;
-    var width = 3;
+    var width = 4;
     
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     // Draw the circle
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(200, 200, 200, 0.6)';
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGoodEnd - 90), true);
     ctx.stroke();
     
     // Draw the great zone
     ctx.lineWidth = (width * 2) + 1;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGreatEnd - 90));
     ctx.stroke();
     
     // Draw the good zone
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius + width, toRadians(zoneGreatEnd - 90), toRadians(zoneGoodEnd - 90));
     ctx.arc(centerX, centerY, radius - width, toRadians(zoneGoodEnd - 90), toRadians(zoneGreatEnd - 90), true);
@@ -318,11 +320,12 @@ function newSkillCheck() {
         }
         
         // Transform the red indicator line
-        $('#sc_tick').css({ 'transform': 'rotate(' + sc_line_pos + 'deg)' })
+        $('#sc_tick').css({ 'transform': 'rotate(' + sc_line_pos + 'deg)' });
     }, 10);
 }
 
 function runSkillChecks() {
+    setupNewZone();
     setInterval(function() {
         if (sc_ready) {
             // When a new skillcheck is ready, then make the current one fade out.
