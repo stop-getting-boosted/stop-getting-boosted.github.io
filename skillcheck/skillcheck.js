@@ -5,6 +5,7 @@ var running = false;
 var perk_unnervingPresence = 0;
 var perk_thisIsNotHappening = 0;
 var perk_overcharge = 0;
+var perk_ruin = false;
 
 // Info on the current skill check
 var sc_running = false;
@@ -54,7 +55,7 @@ $('body').keydown(function(e) {
     }
     
     // Test the zone when "Space" is pressed
-    if (e.which == 32) {
+    if (e.which == 32 && sc_running) {
         testZone();
     }
     
@@ -271,14 +272,14 @@ function drawNewZone() {
     
     // Draw the circle
     ctx.lineWidth = 2;
-    ctx.strokeStyle = 'rgba(200, 200, 200, 0.6)';
+    ctx.strokeStyle = perk_ruin ? 'rgba(186, 0, 0, 0.8)' : 'rgba(200, 200, 200, 0.6)';
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGoodEnd - 90), true);
     ctx.stroke();
     
     // Draw the great zone
     ctx.lineWidth = (width * 2) + 1;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.strokeStyle = perk_ruin ? 'rgba(186, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGreatEnd - 90));
     ctx.stroke();
@@ -323,6 +324,7 @@ function newSkillCheck() {
         
         // Transform the red indicator line
         $('#sc_tick').css({ 'transform': 'rotate(' + sc_line_pos + 'deg)' });
+        $('#sc_tickmark').css({ background: 'radial-gradient(' + (perk_ruin ? '#ffffff' : '#ff0020') + ', rgba(0, 0, 0, 0), rgba(0, 0, 0, 0))' });
     }, 10);
 }
 
@@ -372,6 +374,7 @@ function updateValues() {
         ? 0 : parseInt($('#select-thisisnothappening-tier').val());
     perk_overcharge = $('#checkbox-overcharge:checked').length === 0
         ? 0 : parseInt($('#select-overcharge-tier').val());
+    perk_ruin = $('#checkbox-ruin:checked').length === 1;
 }
 
 function toggleConfigMenu() {

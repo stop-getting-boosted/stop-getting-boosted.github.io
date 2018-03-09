@@ -122,7 +122,6 @@ option {
     width: 13px;
     height: 100px;
     transform: translate(65px, -45px);
-    background: radial-gradient(#ff0020, rgba(255, 0, 0, 0), rgba(255, 0, 0, 0));
 }
 
 #sc_key {
