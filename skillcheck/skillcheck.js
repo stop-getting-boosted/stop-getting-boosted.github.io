@@ -28,36 +28,44 @@ var stat_great = 0;
 var snd_good_1 = new Audio('../res/mp3/sc_good.mp3');
 var snd_good_2 = new Audio('../res/mp3/sc_good.mp3');
 var snd_good_toggle = false;
-
 var snd_great_1 = new Audio('../res/mp3/sc_great.mp3');
 var snd_great_2 = new Audio('../res/mp3/sc_great.mp3');
 var snd_great_toggle = false;
-
 var snd_miss_1 = new Audio('../res/mp3/sc_miss.mp3');
 var snd_miss_2 = new Audio('../res/mp3/sc_miss.mp3');
 var snd_miss_toggle = false;
-
 var snd_open_1 = new Audio('../res/mp3/sc_open.mp3');
 var snd_open_2 = new Audio('../res/mp3/sc_open.mp3');
 var snd_open_toggle = false;
 
 // Various variables for functionality
 var timeout;
+var configMenuOpen;
+
+// Keybinds
+var key_config = 67; // C
+var key_start = 80; // P
 
 // Key listening
-// https://stackoverflow.com/questions/12273451/how-to-fix-delay-in-javascript-keydown
-var keyState = {};
-window.addEventListener('keydown',function(e){
-    keyState[e.keyCode || e.which] = true;
-    
+$('body').keydown(function(e) {
     // If the user presss "P", toggle the running state
-    if (keyState[80]) {
+    if (e.which == key_start && !configMenuOpen) {
         onStart();
     }
-},true);    
-window.addEventListener('keyup',function(e){
-    keyState[e.keyCode || e.which] = false;
-},true);
+    
+    // Test the zone when "Space" is pressed
+    if (e.which == 32) {
+        testZone();
+    }
+    
+    // Toggle the config menu when "C" is pressed
+    if (e.which == key_config) {
+        toggleConfigMenu();
+        if (running && configMenuOpen) {
+            onStart();
+        }
+    }
+});
 
 function isValidTier(tier) {
     return tier > 0 && tier <= 3;
@@ -296,13 +304,7 @@ function newSkillCheck() {
     // so we can make 100 passes every 10ms and each pass if we
     // increment the rotation by 3.6 degrees, we'll have the equivalent
     // of 360 degrees per second.
-    var updateLoop = setInterval(function() {    
-        // If the user is pressing space, then handle the zone
-        if (sc_running && keyState[32]) {
-            testZone();
-            return;
-        }
-        
+    var updateLoop = setInterval(function() {
         // If the running state is no longer active, 
         if (!sc_running) {
             clearInterval(updateLoop);
@@ -362,8 +364,27 @@ function runSkillChecks() {
     }, 10);
 }
 
+function updateValues() {
+    sc_type = $('#select-type').val();
+    perk_unnervingPresence = $('#checkbox-unnervingpresence:checked').length === 0
+        ? 0 : parseInt($('#select-unnervingpresence-tier').val());
+    perk_thisIsNotHappening = $('#checkbox-thisisnothappening:checked').length === 0
+        ? 0 : parseInt($('#select-thisisnothappening-tier').val());
+    perk_overcharge = $('#checkbox-overcharge:checked').length === 0
+        ? 0 : parseInt($('#select-overcharge-tier').val());
+}
+
+function toggleConfigMenu() {
+    configMenuOpen = !configMenuOpen;
+    $('#cfg-menu').css({
+        'z-index': configMenuOpen ? 1 : -1,
+        'opacity': configMenuOpen ? 1 : 0
+    });
+}
+
 function onStart() {
     if (!running) {
+        updateValues();
         sc_ready = true;
         running = !running;
         updateText();

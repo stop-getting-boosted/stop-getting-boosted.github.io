@@ -9,12 +9,66 @@
     </head>
     <body>
         <div id="bg"></div>
+        <div id="cfg-menu" style="z-index: -1; opacity: 0;">
+            <div id="dim" onclick="toggleConfigMenu()"></div>
+            <div id="cfg-panel">
+                <div id="cfg-title">Configure</div>
+                <div id="cfg-options">
+                    <div class="cfg-option">
+                        Type
+                        <select id="select-type">
+                            <option value="generator">Generator</option>
+                            <option value="overcharge">Overcharge</option>
+                            <option value="decisive">Decisive</option>
+                            <option value="heal">Heal</option>
+                            <option value="sabotage">Sabotage</option>
+                        </select>
+                    </div>
+                    <div class="cfg-option">
+                        Unnerving Presence
+                        <input type="checkbox" id="checkbox-unnervingpresence">
+                        <div class="cfg-option">
+                            Tier
+                            <select id="select-unnervingpresence-tier">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="cfg-option">
+                        This Is Not Happening
+                        <input type="checkbox" id="checkbox-thisisnothappening">
+                        <div class="cfg-option">
+                            Tier
+                            <select id="select-thisisnothappening-tier">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="cfg-option">
+                        Overcharge
+                        <input type="checkbox" id="checkbox-overcharge">
+                        <div class="cfg-option">
+                            Tier
+                            <select id="select-overcharge-tier">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="controls">
             <div>
                 <a class="hoverable" href="../">Back</a>
             </div>
             <div>
-                <a class="hoverable">Configure</a>
+                <a class="hoverable" onclick="toggleConfigMenu()">Configure</a>
             </div>
             <div>
                 <a id="start-btn" class="hoverable" onclick="onStart()"></a>
