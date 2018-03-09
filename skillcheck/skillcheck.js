@@ -325,7 +325,6 @@ function newSkillCheck() {
 }
 
 function runSkillChecks() {
-    setupNewZone();
     setInterval(function() {
         if (sc_ready) {
             // When a new skillcheck is ready, then make the current one fade out.
