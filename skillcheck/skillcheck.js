@@ -46,6 +46,7 @@ var configMenuOpen;
 // Keybinds
 var key_config = 67; // C
 var key_start = 80; // P
+var key_skillcheck = 32; // Space
 
 // Key listening
 $('body').keydown(function(e) {
@@ -55,7 +56,7 @@ $('body').keydown(function(e) {
     }
     
     // Test the zone when "Space" is pressed
-    if (e.which == 32 && sc_running) {
+    if (e.which == key_skillcheck && sc_running) {
         testZone();
     }
     
