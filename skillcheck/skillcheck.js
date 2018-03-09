@@ -240,11 +240,53 @@ function setupNewZone() {
     sc_zone_pos = getRandomNumber(sc_range_min, sc_range_max - (sc_zone[0] + sc_zone[1]));
 }
 
+function drawNewZone() {
+    var zoneStart = sc_zone_pos,
+            zoneGreatEnd = zoneStart + sc_zone[1],
+            zoneGoodEnd = zoneGreatEnd + sc_zone[0];
+    
+    // Retrieve the zone canvas context
+    var canvas = document.getElementById('sc_zone');
+    var ctx = canvas.getContext('2d');
+    
+    // Zone sizing
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 65;
+    var width = 3;
+    
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw the circle
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGoodEnd - 90), true);
+    ctx.stroke();
+    
+    // Draw the great zone
+    ctx.lineWidth = (width * 2) + 1;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGreatEnd - 90));
+    ctx.stroke();
+    
+    // Draw the good zone
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius + width, toRadians(zoneGreatEnd - 90), toRadians(zoneGoodEnd - 90));
+    ctx.arc(centerX, centerY, radius - width, toRadians(zoneGoodEnd - 90), toRadians(zoneGreatEnd - 90), true);
+    ctx.stroke();
+}
+
 function newSkillCheck() {
     sc_running = true;
     
     // Setup a new random zone
     setupNewZone();
+    
+    // Draw the new zone
+    drawNewZone();
     
     // Skill checks take about 1 second to go around completely,
     // so we can make 100 passes every 10ms and each pass if we
@@ -275,51 +317,11 @@ function newSkillCheck() {
         
         // Transform the red indicator line
         $('#sc_tick').css({ 'transform': 'rotate(' + sc_line_pos + 'deg)' })
-        
-        var zoneStart = sc_zone_pos,
-            zoneGreatEnd = zoneStart + sc_zone[1],
-            zoneGoodEnd = zoneGreatEnd + sc_zone[0];
-        
-        // Retrieve the zone canvas context
-        var canvas = document.getElementById('sc_zone');
-        var ctx = canvas.getContext('2d');
-        
-        // Zone sizing
-        var centerX = canvas.width / 2;
-        var centerY = canvas.height / 2;
-        var radius = 65;
-        var width = 3;
-        
-        // Clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw the circle
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGoodEnd - 90), true);
-        ctx.stroke();
-        
-        // Draw the great zone
-        ctx.lineWidth = (width * 2) + 1;
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGreatEnd - 90));
-        ctx.stroke();
-        
-        // Draw the good zone
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius + width, toRadians(zoneGreatEnd - 90), toRadians(zoneGoodEnd - 90));
-        ctx.arc(centerX, centerY, radius - width, toRadians(zoneGoodEnd - 90), toRadians(zoneGreatEnd - 90), true);
-        ctx.stroke();
     }, 10);
 }
 
 function runSkillChecks() {
     setInterval(function() {
-        // Update the screen text elements every 10ms
-        updateText();
-        
         if (sc_ready) {
             // When a new skillcheck is ready, then make the current one fade out.
             $('#skillcheck').css({ 'opacity': 0 });
@@ -360,6 +362,7 @@ function onStart() {
     if (!running) {
         sc_ready = true;
         running = !running;
+        updateText();
     } else {
         var stopTimer = setInterval(function() {
             // Only set the running state to false once the current skill check has been completed.
@@ -367,9 +370,11 @@ function onStart() {
                 clearTimeout(stopTimer);
                 clearTimeout(timeout);
                 running = false;
+                updateText();
             }
         }, 10);
     }
 }
 
 runSkillChecks();
+updateText();
