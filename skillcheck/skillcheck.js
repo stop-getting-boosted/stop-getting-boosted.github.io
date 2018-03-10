@@ -63,9 +63,6 @@ $('body').keydown(function(e) {
     // Toggle the config menu when "C" is pressed
     if (e.which == key_config) {
         toggleConfigMenu();
-        if (running && configMenuOpen) {
-            onStart();
-        }
     }
 });
 
@@ -384,6 +381,10 @@ function toggleConfigMenu() {
         'z-index': configMenuOpen ? 1 : -1,
         'opacity': configMenuOpen ? 1 : 0
     });
+    
+    if (running && configMenuOpen) {
+        onStart();
+    }
 }
 
 function onStart() {
