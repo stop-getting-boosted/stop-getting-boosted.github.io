@@ -254,6 +254,8 @@ function drawNewZone() {
             zoneGreatEnd = zoneStart + sc_zone[1],
             zoneGoodEnd = zoneGreatEnd + sc_zone[0];
     
+    var ruin = perk_ruin && sc_type == 'generator';
+    
     // Retrieve the zone canvas context
     var canvas = document.getElementById('sc_zone');
     var ctx = canvas.getContext('2d');
@@ -270,14 +272,14 @@ function drawNewZone() {
     
     // Draw the circle
     ctx.lineWidth = 2;
-    ctx.strokeStyle = perk_ruin ? 'rgba(186, 0, 0, 0.8)' : 'rgba(200, 200, 200, 0.6)';
+    ctx.strokeStyle = ruin ? 'rgba(186, 0, 0, 0.8)' : 'rgba(200, 200, 200, 0.6)';
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGoodEnd - 90), true);
     ctx.stroke();
     
     // Draw the great zone
     ctx.lineWidth = (width * 2) + 1;
-    ctx.strokeStyle = perk_ruin ? 'rgba(186, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
+    ctx.strokeStyle = ruin ? 'rgba(186, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)';
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRadians(zoneStart - 90), toRadians(zoneGreatEnd - 90));
     ctx.stroke();
