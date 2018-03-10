@@ -152,6 +152,15 @@ function getSkillCheckZone(type) {
     return size;
 }
 
+function isZoneOutOfRange(type) {
+    switch (type) {
+        case 'decisive':
+            return sc_line_pos > 360;
+        default:
+            return sc_line_pos > sc_zone_pos + sc_zone[0] + sc_zone[1] + sc_zone_end_padding;
+    }
+}
+
 function getRandomNumber(start, end) {
     // If the start value is greater than the end value, then flip the values
     if (start > end) {
@@ -249,12 +258,10 @@ function setupNewZone() {
     sc_zone_pos = getRandomNumber(sc_range_min, sc_range_max - (sc_zone[0] + sc_zone[1]));
 }
 
-function drawNewZone() {
+function drawNewZone(ruin) {
     var zoneStart = sc_zone_pos,
             zoneGreatEnd = zoneStart + sc_zone[1],
             zoneGoodEnd = zoneGreatEnd + sc_zone[0];
-    
-    var ruin = perk_ruin && sc_type == 'generator';
     
     // Retrieve the zone canvas context
     var canvas = document.getElementById('sc_zone');
@@ -295,11 +302,13 @@ function drawNewZone() {
 function newSkillCheck() {
     sc_running = true;
     
+    var ruin = perk_ruin && sc_type == 'generator';
+    
     // Setup a new random zone
     setupNewZone();
     
     // Draw the new zone
-    drawNewZone();
+    drawNewZone(ruin);
     
     // Skill checks take about 1 second to go around completely,
     // so we can make 100 passes every 10ms and each pass if we
@@ -313,18 +322,20 @@ function newSkillCheck() {
         }
         
         // Increment the progress
-        sc_line_pos = normalizeAngle(sc_line_pos + 3.6);
+        sc_line_pos += 3.6;
         
         // Check if the line pos has exceeded the max zone area
-        if (sc_line_pos > sc_zone_pos + sc_zone[0] + sc_zone[1] + sc_zone_end_padding) {
+        if (isZoneOutOfRange(sc_type)) {
             handleAction('miss');
             clearInterval(updateLoop);
             return;
         }
         
+        sc_line_pos = normalizeAngle(sc_line_pos);
+        
         // Transform the red indicator line
         $('#sc_tick').css({ 'transform': 'rotate(' + sc_line_pos + 'deg)' });
-        $('#sc_tickmark').css({ background: 'radial-gradient(' + (perk_ruin ? '#ffffff' : '#ff0020') + ', rgba(0, 0, 0, 0), rgba(0, 0, 0, 0))' });
+        $('#sc_tickmark').css({ background: 'radial-gradient(' + (ruin ? '#ffffff' : '#ff0020') + ', rgba(0, 0, 0, 0), rgba(0, 0, 0, 0))' });
     }, 10);
 }
 
