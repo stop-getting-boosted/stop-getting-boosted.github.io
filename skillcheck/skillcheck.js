@@ -139,7 +139,6 @@ function getSkillCheckZone(type) {
     // Apply perk modifiers
     modifier = getUnnervingPresenceModifier(perk_unnervingPresence);
     size[0] *= modifier;
-    size[1] *= modifier;
     
     if (type !== 'decisive') {
         // Apply perk modifiers
